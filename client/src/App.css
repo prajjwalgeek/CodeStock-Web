@@ -103,9 +103,9 @@ body{
     clip-path: circle(0% at 100% 0%);
     transition: 0.7s ease-in-out;
     z-index: 2;
+    color:var(--primary-bg);
 }
 .nav-items a{
-    color: var(--primary-bg);
     margin: 1.2em 0;
     font-size: 1.4em;
     display: block;
@@ -142,6 +142,10 @@ body{
 }
 .nav-open{
     clip-path: circle(300% at 100% 0%);
+}
+#welcome{
+    color: var(--txt-dark);
+    margin: 0 1em 0 auto;
 }
 /* navbar code ends  */
 

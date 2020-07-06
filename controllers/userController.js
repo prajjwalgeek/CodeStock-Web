@@ -55,14 +55,14 @@ exports.login = (req, res) => {
     User.findOne({ email })
         .then(user => {
             if (!user) {
-                return res.status(404).json({ emailNotFound: "Email not found" });
+                return res.json({ email: "Email not found" });
             }
 
             bcrypt.compare(password, user.password).then(isMatch => {
                 if (isMatch) {
                     const payload = {
                         id: user.id,
-                        name: user.name
+                        firstName: user.firstName
                     };
 
                     jwt.sign(
@@ -79,8 +79,8 @@ exports.login = (req, res) => {
                         }
                     );
                 } else {
-                    return res.status(400).json({
-                        passwordIncorrect: "Password incorrect"
+                    return res.json({
+                        password: "Password incorrect"
                     });
                 }
             });

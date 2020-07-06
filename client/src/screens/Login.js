@@ -4,6 +4,10 @@ import Footer from '../components/Footer';
 import Button from '../components/elements/Button';
 import Input from '../components/elements/Input';
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { loginUser } from "../redux/actions/authActions";
+
 import { Link } from 'react-router-dom';
 
 
@@ -15,6 +19,29 @@ class Login extends React.Component {
         password: '',
         errors: {}
     }
+
+    // componentWillReceiveProps(nextProps) {
+    //     if (nextProps.auth.isAuthenticated) {
+    //         this.props.history.push("/");
+    //     }
+    //     if (nextProps.errors) {
+    //         this.setState({
+    //             errors: nextProps.errors
+    //         });
+    //     }
+    // }
+    static getDerivedStateFromProps(props, state) {
+        if (props.auth.isAuthenticated) {
+            props.history.push("/");
+            return null;
+        }
+        if (props.errors) {
+            return {
+                errors: props.errors
+            }
+        }
+    }
+
     onInputChange = (e) => {
         this.setState({
             [e.target.id]: e.target.value
@@ -27,6 +54,7 @@ class Login extends React.Component {
             password: this.state.password
         }
         console.log(userData);
+        this.props.loginUser(userData);
     }
 
     render() {
@@ -87,4 +115,16 @@ class Login extends React.Component {
 
 }
 
-export default Login
+Login.propTypes = {
+    loginUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
+};
+const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors
+});
+export default connect(
+    mapStateToProps,
+    { loginUser }
+)(Login);

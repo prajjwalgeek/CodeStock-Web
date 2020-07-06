@@ -2,11 +2,15 @@ import React from 'react'
 
 import { Link } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+
+import PropTypes from "prop-types";
+
 import Button from '../components/elements/Button';
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-function Home() {
+function Home(props) {
     return (
         <React.Fragment>
             <Navbar />
@@ -17,9 +21,13 @@ function Home() {
                 </div>
                 <div className="home-page-cta">
                     <Button width="150px" outlined>
-                        <Link to="/register">Join Us</Link>
+                        {props.isAuthenticated ? (
+                            <Link to="/register">Go to Profile</Link>
+                        ) : (
+                                <Link to="/register">Join Us</Link>
+                            )}
                     </Button>
-                    <Button width="150px" color="#000000" bg="white" outlined>
+                    <Button width="150px" color="#000000" bg="#FAF2F2" outlined>
                         <Link to="/code">Code Now</Link>
                     </Button>
                 </div>
@@ -28,5 +36,12 @@ function Home() {
         </React.Fragment>
     )
 }
+Home.propTypes = {
+    isAuthenticated: PropTypes.bool.isRequired
+}
 
-export default Home
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps)(Home);

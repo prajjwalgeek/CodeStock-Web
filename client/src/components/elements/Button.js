@@ -17,6 +17,7 @@ const StyledA = styled.button`
     ${props => props.outlined ? outlined : null}
     position:relative;
     z-index:1;
+    cursor:pointer;
 
     &:hover{
         color:${props => props.bg ? props.bg : '#000000'};

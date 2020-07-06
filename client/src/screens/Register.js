@@ -1,15 +1,21 @@
 import React from 'react'
 import Navbar from '../components/Navbar';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { registerUser } from "../redux/actions/authActions";
+
 import Footer from '../components/Footer';
 import Button from '../components/elements/Button';
 import Input from '../components/elements/Input';
 
 
+
 import { BsCodeSlash } from "react-icons/bs";
 
 
-class Signup extends React.Component {
+class Register extends React.Component {
 
     state = {
         firstName: '',
@@ -19,6 +25,23 @@ class Signup extends React.Component {
         password2: '',
         errors: {}
     }
+
+    // componentWillReceiveProps(nextProps) {
+    //     if (nextProps.errors) {
+    //         this.setState({
+    //             errors: nextProps.errors
+    //         });
+    //     }
+    // }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.errors) {
+            return {
+                errors: props.errors
+            }
+        }
+    }
+
     onInputChange = (e) => {
         this.setState({
             [e.target.id]: e.target.value
@@ -34,7 +57,8 @@ class Signup extends React.Component {
             password: this.state.password,
             password2: this.state.password2
         };
-        console.log(newUser);
+
+        this.props.registerUser(newUser, this.props.history);
     }
 
     render() {
@@ -117,4 +141,17 @@ class Signup extends React.Component {
     }
 }
 
-export default Signup
+Register.propTypes = {
+    registerUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
+};
+const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors
+});
+export default connect(
+    mapStateToProps,
+    { registerUser }
+)(withRouter(Register));
+
