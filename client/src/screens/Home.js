@@ -1,20 +1,20 @@
 import React from 'react'
 
 import { Link } from 'react-router-dom';
-
 import { connect } from 'react-redux';
-
 import PropTypes from "prop-types";
 
 import Button from '../components/elements/Button';
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import Particle from '../components/elements/Particles';
 
 function Home(props) {
     return (
         <React.Fragment>
             <Navbar />
             <div className="home-page">
+                <Particle />
                 <div className="home-page-txt">
                     <h1>Welcome to <span id="hover-up">CodeStock</span></h1>
                     <p>Write code | Share code | Learn code</p>

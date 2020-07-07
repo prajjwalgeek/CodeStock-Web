@@ -1,10 +1,10 @@
 import React from 'react'
-// import { Switch } from 'antd';
 import { Link } from 'react-router-dom';
-import { FiMenu } from "react-icons/fi";
-import { AiOutlineClose } from "react-icons/ai";
 import { connect } from 'react-redux';
 import { logoutUser } from '../redux/actions/authActions';
+import { Tooltip } from 'antd';
+
+import classNames from 'classnames';
 
 
 import PropTypes from "prop-types";
@@ -14,26 +14,20 @@ class Navbar extends React.Component {
     state = {
         open: false
     }
-    componentDidMount() {
-        if (this.state.open) {
-            document.querySelector('.nav-items').classList.add('nav-open')
-        } else {
-            document.querySelector('.nav-items').classList.remove('nav-open')
-        }
-    }
 
     toggleNav = () => {
-        this.setState({
-            open: !this.state.open
+        this.setState(prevState => {
+            return {
+                open: !prevState.open
+            }
         })
-        document.querySelector('.nav-items').classList.toggle('nav-open')
-
     }
     logoutHandler = () => {
-        document.querySelector('.nav-items').classList.remove('nav-open');
         this.props.logoutUser();
     }
     render() {
+        const url = window.location.href.split('/');
+        const active = url.pop();
         return (
             <div className="navbar">
                 <div className="nav-logo">
@@ -42,23 +36,44 @@ class Navbar extends React.Component {
                 {this.props.isAuthenticated ? (
                     <p id="welcome">Welcome, {this.props.firstName}</p>
                 ) : null}
-                <div className="nav-toggler-wrapper">
-                    {!this.state.open ? (
-                        <FiMenu size={24} color="#000000" onClick={this.toggleNav} />
-                    ) : (
-                            <AiOutlineClose size={24} color="#FAF2F2" onClick={this.toggleNav} />
-                        )}
-                </div>
-                <div className="nav-items">
-                    <Link to="/" className="active">Home</Link>
-                    <Link to="/code">Code</Link>
+                <Tooltip placement="bottom" title={this.state.open ? "Close" : "Menu"} color="#000000">
+                    <div className={classNames("nav-toggler-wrapper", {
+                        "cross": this.state.open
+                    })} onClick={this.toggleNav}>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </Tooltip>
+                <div className={classNames('nav-items', {
+                    'nav-open': this.state.open
+                })}>
+                    <Link to="/" className={classNames({
+                        "active": active === ''
+                    })}>Home</Link>
+                    <Link to="/code"
+                        className={classNames({
+                            "active": active === 'code'
+                        })}
+                    >Code</Link>
                     {this.props.isAuthenticated ? (
-                        <Link to="/" onClick={this.logoutHandler}>Logout</Link>
-                        // <p>hello</p>
+                        <Link to="/" onClick={this.logoutHandler}
+                            className={classNames({
+                                "active": active === 'logout'
+                            })}
+                        >Logout</Link>
                     ) : (
                             <>
-                                <Link to="/Login">Login</Link>
-                                <Link to="/register">Signup</Link>
+                                <Link to="/login"
+                                    className={classNames({
+                                        "active": active === 'login'
+                                    })}
+                                >Login</Link>
+                                <Link to="/register"
+                                    className={classNames({
+                                        "active": active === 'register'
+                                    })}
+                                >Signup</Link>
                             </>
                         )
                     }

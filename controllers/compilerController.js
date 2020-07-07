@@ -1,7 +1,6 @@
 const HackerEarth = require("hackerearth-node");
-const keys = require("../config/keys");
 
-const hackerEarth = new HackerEarth(keys.hackerearthApiKey);
+const hackerEarth = new HackerEarth(process.env.hackerearthApiKey);
 exports.compileCode = async (req, res) => {
     if (!req.body.code) {
         return res.status(400).json({

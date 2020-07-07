@@ -5,6 +5,7 @@ import Button from '../components/elements/Button';
 import Input from '../components/elements/Input';
 
 import PropTypes from "prop-types";
+
 import { connect } from "react-redux";
 import { loginUser } from "../redux/actions/authActions";
 
@@ -12,6 +13,7 @@ import { Link } from 'react-router-dom';
 
 
 import { BsCodeSlash } from "react-icons/bs";
+import Particle from '../components/elements/Particles';
 
 class Login extends React.Component {
     state = {
@@ -64,6 +66,7 @@ class Login extends React.Component {
                 <Navbar />
                 <div className="login-page">
                     <div className="login-form-wrapper">
+                        <Particle />
                         <div className="login-form">
                             <form onSubmit={this.handleSubmit}>
                                 <Button width="80%" color="#000000" bg="#FAF2F2" outlined>

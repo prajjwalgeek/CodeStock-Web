@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import { Link, withRouter } from 'react-router-dom';
 
 import PropTypes from "prop-types";
+
 import { connect } from "react-redux";
 import { registerUser } from "../redux/actions/authActions";
 
@@ -13,6 +14,7 @@ import Input from '../components/elements/Input';
 
 
 import { BsCodeSlash } from "react-icons/bs";
+import Particle from '../components/elements/Particles';
 
 
 class Register extends React.Component {
@@ -68,6 +70,7 @@ class Register extends React.Component {
                 <Navbar />
                 <div className="login-page">
                     <div className="login-form-wrapper">
+                        <Particle />
                         <div className="login-form">
                             <form onSubmit={this.handleSubmit}>
                                 <Button width="80%" color="#000000" bg="#FAF2F2" outlined>

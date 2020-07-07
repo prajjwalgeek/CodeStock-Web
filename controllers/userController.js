@@ -1,11 +1,12 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const keys = require("../config/keys");
-
-
 const validateRegisterInput = require('../validation/register');
 const validateLoginInput = require('../validation/login');
 const User = require("../models/User");
+
+
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.register = (req, res) => {
 
@@ -32,7 +33,21 @@ exports.register = (req, res) => {
                     newUser.password = hash;
                     newUser
                         .save()
-                        .then(user => res.json(user))
+                        .then(user => {
+                            // const msg = {
+                            //     to: user.email,
+                            //     from: process.env.emailFrom,
+                            //     subject: 'Sending with Twilio SendGrid is Fun',
+                            //     text: 'and easy to do anywhere, even with Node.js',
+                            //     html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+                            // };
+                            // sgMail.send(msg).then(() => {
+                            //     console.log('Message sent')
+                            // }).catch((error) => {
+                            //     console.log(error.response.body)
+                            // })
+                            res.json(user);
+                        })
                         .catch(err => console.log(err))
                 });
             });
@@ -67,7 +82,7 @@ exports.login = (req, res) => {
 
                     jwt.sign(
                         payload,
-                        keys.secretOrKey,
+                        process.env.secretOrKey,
                         {
                             expiresIn: 31556926
                         },
